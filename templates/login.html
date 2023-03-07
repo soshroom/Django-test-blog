@@ -1,0 +1,19 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    логин
+{% endblock %}
+
+{% block body %}
+
+    <form action="/login/" method="POST">
+        {% csrf_token %}
+        {{ form.as_div }}
+        <button type="submit">вход</button>
+    </form>
+    {% if error %}
+        <div style="color:red;">
+            ошибка авторизации
+        </div>
+    {% endif %}
+{% endblock %}

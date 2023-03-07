@@ -1,0 +1,19 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    регистрация
+{% endblock %}
+
+{% block body %}
+
+    <form action="/register/" method="POST">
+        {% csrf_token %}
+        {{ form.as_div }}
+        <button type="submit">регистрация</button>
+    </form>
+    {% if error %}
+        <div style="color:red;">
+            {{error}}
+        </div>
+    {% endif %}
+{% endblock %}

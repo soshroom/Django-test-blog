@@ -1,0 +1,23 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    создать пост
+{% endblock %}
+
+{% block body %}
+    <div class="grey" style="display: flex; justify-content: space-between;">
+        <a href="/" style="text-decoration: none; color:white">
+            <button type="submit" class="btn ">
+                на главную
+            </button>
+        </a>
+        <div>{{ user }}</div>
+    </div>
+    <form action="/newPost/" method="post">
+        {% csrf_token %}
+        <div><textarea name="name" cols="60" rows="1" placeholder="заголовок"></textarea></div>
+        <div><textarea name="content" cols="60" rows="10" placeholder="пост"></textarea></div>
+        <button type="submit">Создать</button>
+    </form>
+{% endblock %}
+

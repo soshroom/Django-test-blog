@@ -1,0 +1,71 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    {{ post.name }}
+{% endblock %}
+
+{% block body %}
+
+    <div class="grey" style="display: flex; justify-content: space-between;">
+        <a href="/" style="text-decoration: none; color:white">
+            <button type="submit" class="btn ">
+                на главную
+            </button>
+        </a>
+        <div>{{ user }}</div>
+    </div>
+
+    <div class="post">
+        <h2 class="post-title">{{ post.name }}</h2>
+        <div class="post-content">
+            <p>{{ post.content }}</p>
+        </div>
+        <div class="post-author">
+            автор: {{ post.creator }}
+        </div>
+        <div class="post-info">
+            <form method="post" action="/likePost/">
+                {% csrf_token %}
+                <button class="post-likes-button" {% if post.isLiked %} style="background-color: #c6ff00" {% endif %}
+                        type="submit" name="id" value="{{ post.id }}">
+                    <span class="post-likes-count">{{ post.likes_count }}</span> <span>Нравится</span>
+                </button>
+            </form>
+        </div>
+    </div>
+    <hr>
+    <h3>Комментарии</h3>
+    {% for comment in comments %}
+        <div class="post" style="margin-bottom: 10px">
+            <div class="post-content">
+                <p>{{ comment.content }}</p>
+            </div>
+            <div class="post-author">
+                автор: {{ comment.creator }}
+            </div>
+            <div class="post-info">
+                <form method="post" action="/likeComment/">
+                    {% csrf_token %}
+                    <button
+                            class="post-likes-button"
+                            {% if comment.isLiked %}
+                            style="background-color: #c6ff00"
+                            {% endif %}
+                            type="submit" name="id" value="{{ comment.id }}">
+                        <span class="post-likes-count">{{ comment.likes_count }}</span> <span>Нравится</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    {% endfor %}
+    <hr>
+    {% if user.is_authenticated %}
+        <h4>написать комментарий</h4>
+        <form method="post" action="/post/{{ post.id }}/addComment/">
+            {% csrf_token %}
+            <textarea name="content" cols="100" rows="10" placeholder="Комментарий"></textarea>
+            <button type="submit">отправить</button>
+        </form>
+    {% endif %}
+{% endblock %}
+

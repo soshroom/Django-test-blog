@@ -1,0 +1,53 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    main page
+{% endblock %}
+
+{% block body %}
+    <div class="grey" style="display: flex; justify-content: space-between;">
+        {% if user.is_authenticated %}
+            <a href="/newPost/"><button class="btn">создать пост</button></a>
+        {% endif %}
+        {% if user.is_authenticated %}
+            <div>{{ user }}</div>
+        {% else %}
+            <div style="display: flex">
+                <form action="/login">
+                    <button>логин</button>
+                </form>
+                <form action="/register">
+                    <button>регистрация</button>
+                </form>
+            </div>
+        {% endif %}
+    </div>
+    {% for post in posts %}
+        <div class="post" style="margin-bottom: 10px">
+            <h2 class="post-title">{{ post.name }}</h2>
+            <div class="post-content">
+                <p>{{ post.content }}</p>
+            </div>
+            <div class="post-author">
+                {{ post.created_on }}
+                <br>
+                автор: {{ post.creator }}
+            </div>
+            <div class="post-info">
+                <form method="post" action="/likePost/">
+                    {% csrf_token %}
+                    <button class="post-likes-button" {% if post.isLiked %}
+                            style="background-color: #c6ff00" {% endif %}
+                            type="submit" name="id" value="{{ post.id }}">
+                        <span class="post-likes-count">{{ post.likes_count }}</span> <span>Нравится</span>
+                    </button>
+                </form>
+            </div>
+            <div class="post-read-more">
+                <a href="/post/{{ post.id }}" style="text-decoration: none; color:white">
+                    <button class="post-read-more-button">Читать</button>
+                </a>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
